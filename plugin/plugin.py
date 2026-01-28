@@ -10,7 +10,7 @@ import os
 def Plugins(**kwargs):
     return [PluginDescriptor(
         name="MarqozzzCUP", 
-        description="Channel Updater", 
+        description="Hotbird Channel Updater", 
         where=PluginDescriptor.WHERE_PLUGINMENU,
         fnc=main
     )]
@@ -20,7 +20,7 @@ def main(session, **kwargs):
 
 class MarqozzzCUPScreen(Screen):
     skin = """
-    <screen position="100,100" size="500,350" title="MarqozzzCUP - Channel Updater" flags="wfNoBorder">
+    <screen position="100,100" size="500,350" title="MarqozzzCUP - Hotbird Updater" flags="wfNoBorder">
         <ePixmap position="10,10" size="140,140" zPosition="1" 
                  pixmap="Extensions/MarqozzzCUP/icon.png" 
                  transparent="1" alphatest="blend" scale="1" />
@@ -40,17 +40,17 @@ class MarqozzzCUPScreen(Screen):
 
     def getLists(self):
         return [
-            ("Pełny Backup ZIP (Release)", "https://github.com/marqozzz/MarqozzzCUP-/releases/latest/download/fullbackup.zip"),
-            ("Hotbird 13E", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/hotbird.tv"),
-            ("Astra 19.2E", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/astra.tv")
+            ("Hotbird Kompletny (ZIP)", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB.zip"),
+            ("Tylko bouquets.tv", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/bouquets.tv")
         ]
 
     def ok(self):
         current = self["choicelist"].l.getCurrent()
         if current:
             self.current_url = current[1]
+            self.current_name = current[0]
             self.session.openWithCallback(self.confirmUpdate, MessageBox, 
-                text="Pobrać: %s?" % current[0])
+                text="Pobrać: %s?" % self.current_name)
 
     def confirmUpdate(self, confirmed):
         if confirmed:
@@ -66,7 +66,7 @@ class MarqozzzCUPScreen(Screen):
                 path = "/etc/enigma2/userbouquet.marqozzzcup.tv"
                 with open(path, "wb") as f:
                     f.write(data)
-                self.session.open(MessageBox, text="Lista pobrana!\nRestart GUI zalecany.", 
+                self.session.open(MessageBox, text="Lista %s pobrana!" % self.current_name, 
                                 type=MessageBox.TYPE_INFO, timeout=5)
         except Exception as e:
             self.session.open(MessageBox, text="Błąd: %s" % str(e), type=MessageBox.TYPE_ERROR)
@@ -74,12 +74,14 @@ class MarqozzzCUPScreen(Screen):
     def installZip(self):
         zip_path = "/tmp/marqozzzcup.zip"
         try:
+            self.session.open(MessageBox, text="Pobieranie %s..." % self.current_name, 
+                            type=MessageBox.TYPE_INFO, timeout=10)
             urlretrieve(self.current_url, zip_path)
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
                 zip_ref.extractall("/etc/enigma2/")
             os.unlink(zip_path)
-            self.session.open(MessageBox, text="Pełny backup zainstalowany!\nEnigma2 restart...", 
+            self.session.open(MessageBox, text="Hotbird kompletny backup zainstalowany!\nRestart Enigma2...", 
                             type=MessageBox.TYPE_INFO, timeout=5)
-            os.system("init 4 && sleep 2 && init 3")
+            os.system("init 4 && sleep 3 && init 3")
         except Exception as e:
-            self.session.open(MessageBox, text="Błąd ZIP: %s" % str(e), type=MessageBox.TYPE_ERROR)
+            self.session.open(MessageBox, text
