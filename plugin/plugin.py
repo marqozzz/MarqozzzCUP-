@@ -74,14 +74,15 @@ class MarqozzzCUPScreen(Screen):
     def installZip(self):
         zip_path = "/tmp/marqozzzcup.zip"
         try:
-            self.session.open(MessageBox, text="Pobieranie %s..." % self.current_name, 
+            self.session.open(MessageBox, text="Pobieranie Hotbird...", 
                             type=MessageBox.TYPE_INFO, timeout=10)
             urlretrieve(self.current_url, zip_path)
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
                 zip_ref.extractall("/etc/enigma2/")
             os.unlink(zip_path)
-            self.session.open(MessageBox, text="Hotbird kompletny backup zainstalowany!\nRestart Enigma2...", 
+            self.session.open(MessageBox, text="Hotbird zainstalowany! Restart...", 
                             type=MessageBox.TYPE_INFO, timeout=5)
             os.system("init 4 && sleep 3 && init 3")
         except Exception as e:
-            self.session.open(MessageBox, text
+            self.session.open(MessageBox, text="Błąd ZIP: %s" % str(e), 
+                            type=MessageBox.TYPE_ERROR)
