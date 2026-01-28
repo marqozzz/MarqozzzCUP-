@@ -20,8 +20,8 @@ def main(session, **kwargs):
 
     # Tu ustawiasz daty ręcznie
     lists_with_date = [
-        ("%s (28.01.2026)" % lists[0][0], lists[0][1]),
-        ("%s (28.01.2026)" % lists[1][0], lists[1][1])
+        ("%s (27.01.2026)" % lists[0][0], lists[0][1]),
+        ("%s (08.12.2025)" % lists[1][0], lists[1][1])
     ]
 
     session.openWithCallback(
