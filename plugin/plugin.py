@@ -7,7 +7,7 @@ import zipfile
 import os
 import shutil
 
-CURRENT_VERSION = "1.1"  # Twoja aktualna wersja
+CURRENT_VERSION = "1.1"  # Twoja wersja
 
 def Plugins(**kwargs):
     return [PluginDescriptor(name="MarqozzzCUP v%s" % CURRENT_VERSION, 
@@ -50,20 +50,19 @@ def main(session, **kwargs):
     remote_version = getRemoteVersion()
     
     lists = [
-        ("Hotbird @Bzyk83 mod. Republika", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-REPUBLIKA/marqozzzcup-complete-HB-REPUBLIKA.zip"),
-        ("Hotbird+Astra @Bzyk83 mod. Republika", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-ASTRA-REPUBLIKA/marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip"),
-        ("Hotbird @Bzyk83", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB/marqozzzcup-complete-HB.zip"),
-        ("Hotbird+Astra @Bzyk83", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-ASTRA/marqozzzcup-complete-HB-ASTRA.zip")
+        ("Hotbird @Bzyk83 mod. Republika", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-REPUBLIKA.zip"),
+        ("Hotbird+Astra @Bzyk83 mod. Republika", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip"),
+        ("Hotbird @Bzyk83", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB.zip"),
+        ("Hotbird+Astra @Bzyk83", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-ASTRA.zip")
     ]
     
     dates = getDates()
     lists_display = []
     
-    # Sprawdź aktualizację
     if remote_version > CURRENT_VERSION:
-        lists_display.append(("🔄 NOWA WERSJA %s ➤ %s" % (CURRENT_VERSION, remote_version), "UPDATE", None))
+        lists_display.append(("Nowa wersja %s (z %s)" % (remote_version, CURRENT_VERSION), "UPDATE", None))
     else:
-        lists_display.append(("✅ Plugin aktualny v%s" % CURRENT_VERSION, "CURRENT", None))
+        lists_display.append(("Plugin aktualny v%s" % CURRENT_VERSION, "CURRENT", None))
     
     for name, url in lists:
         date = dates.get(name, "brak daty")
@@ -71,31 +70,31 @@ def main(session, **kwargs):
         lists_display.append((display, url))
     
     session.openWithCallback(lambda choice: choiceCallback(session, choice), 
-                            ChoiceBox, title="🛰️ MarqozzzCUP v%s" % CURRENT_VERSION, list=lists_display)
+                            ChoiceBox, title="MarqozzzCUP v%s" % CURRENT_VERSION, list=lists_display)
 
 def choiceCallback(session, choice):
     if choice and choice[1]:
         if choice[1] == "UPDATE":
             session.openWithCallback(lambda confirmed: updateConfirm(session, confirmed), 
-                                   MessageBox, text="🔄 Zaktualizować do v%s?" % getRemoteVersion(), 
+                                   MessageBox, text="Zaktualizowac plugin do v%s?" % getRemoteVersion(), 
                                    type=MessageBox.TYPE_YESNO)
         elif choice[1] == "CURRENT":
-            session.open(MessageBox, text="✅ Masz najnowszą wersję v%s!" % CURRENT_VERSION, type=MessageBox.TYPE_INFO, timeout=2)
+            session.open(MessageBox, text="Masz najnowsza wersja pluginu v%s!" % CURRENT_VERSION, type=MessageBox.TYPE_INFO, timeout=2)
         else:
             url = choice[1]
             full_name = choice[0]
             session.openWithCallback(lambda confirmed: confirmCallback(session, confirmed, url, full_name), 
-                                   MessageBox, text="🚀 Zainstalować listę?\n\n%s" % full_name, 
+                                   MessageBox, text="Zainstalowac liste?\n\n%s" % full_name, 
                                    type=MessageBox.TYPE_YESNO)
 
 def updateConfirm(session, confirmed):
     if confirmed:
         if updatePlugin(session):
-            session.open(MessageBox, text="✅ ZAKTUALIZOWANO v%s!\n🔄 Restart..." % getRemoteVersion(), 
-                        type=MessageBox.TYPE_INFO, timeout=3)
-            os.system("killall -9 enigma2 &")
+            session.open(MessageBox, text="Plugin zaktualizowany!\nDekoder zostanie zrestartowany za 5 sekund...", 
+                        type=MessageBox.TYPE_INFO, timeout=5)
+            os.system("(sleep 5 && killall -9 enigma2) &")
         else:
-            session.open(MessageBox, text="❌ Błąd aktualizacji!", type=MessageBox.TYPE_ERROR)
+            session.open(MessageBox, text="Blad aktualizacji pluginu!", type=MessageBox.TYPE_ERROR)
 
 def confirmCallback(session, confirmed, url, full_name):
     if confirmed:
@@ -126,10 +125,10 @@ def installList(session, url, full_name):
         os.unlink("/tmp/list.zip")
         shutil.rmtree("/tmp/list_unpack")
         
-        session.open(MessageBox, text="✅ ZAKOŃCZONO!\n%s\nPlików: %d\n🔄 Restart za 5s..." % (full_name, files_copied), 
+        session.open(MessageBox, text="Lista zainstalowana!\n%s\nPlikow: %d\nDekoder zostanie zrestartowany za 5 sekund..." % (full_name, files_copied), 
                      type=MessageBox.TYPE_INFO, timeout=5)
         
         os.system("(sleep 5 && killall -9 enigma2) &")
         
     except Exception as e:
-        session.open(MessageBox, text="❌ BŁĄD:\n%s\n%s" % (full_name, str(e)), type=MessageBox.TYPE_ERROR)
+        session.open(MessageBox, text="Blad instalacji!\n%s\n%s" % (full_name, str(e)), type=MessageBox.TYPE_ERROR)
