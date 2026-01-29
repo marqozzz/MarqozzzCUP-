@@ -50,10 +50,10 @@ def main(session, **kwargs):
     remote_version = getRemoteVersion()
     
     lists = [
-        ("Hotbird @Bzyk83 mod. Republika", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-REPUBLIKA.zip"),
-        ("Hotbird+Astra @Bzyk83 mod. Republika", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip"),
-        ("Hotbird @Bzyk83", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB.zip"),
-        ("Hotbird+Astra @Bzyk83", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-ASTRA.zip")
+        ("Hotbird @Bzyk83 mod. Republika", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-REPUBLIKA/marqozzzcup-complete-HB-REPUBLIKA.zip"),
+        ("Hotbird+Astra @Bzyk83 mod. Republika", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-ASTRA-REPUBLIKA/marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip"),
+        ("Hotbird @Bzyk83", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB/marqozzzcup-complete-HB.zip"),
+        ("Hotbird+Astra @Bzyk83", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-ASTRA/marqozzzcup-complete-HB-ASTRA.zip")
     ]
     
     dates = getDates()
