@@ -7,10 +7,18 @@ import zipfile
 import os
 import shutil
 
+CURRENT_VERSION = "1.0"  # Twoja aktualna wersja
+
 def Plugins(**kwargs):
-    return [PluginDescriptor(name="MarqozzzCUP", 
-                            description="4 listy kanałów z datami i licznikami", 
+    return [PluginDescriptor(name="MarqozzzCUP v%s" % CURRENT_VERSION, 
+                            description="Listy kanałów + auto-update", 
                             where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main)]
+
+def getRemoteVersion():
+    try:
+        return urlopen("https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/plugin/version.txt").read().decode().strip()
+    except:
+        return "0.0"
 
 def getDates():
     try:
@@ -24,19 +32,23 @@ def getDates():
     except:
         return {}
 
-def getCounters():
+def updatePlugin(session):
     try:
-        counters_raw = urlopen("https://marqozzz.github.io/MarqozzzCUP-/lists/pobrania.php").read().decode()
-        counters = {}
-        for line in counters_raw.split('\n'):
-            if ':' in line:
-                name, count = line.split(':', 1)
-                counters[name.strip()] = count.strip()
-        return counters
+        plugin_path = "/usr/lib/enigma2/python/Plugins/Extensions/MarqozzzCUP/"
+        urlretrieve("https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/MarqozzzCUP-plugin.zip", "/tmp/plugin.zip")
+        
+        with zipfile.ZipFile("/tmp/plugin.zip", 'r') as z:
+            z.extractall(plugin_path)
+        
+        os.unlink("/tmp/plugin.zip")
+        os.chmod(os.path.join(plugin_path, "plugin.py"), 0o755)
+        return True
     except:
-        return {}
+        return False
 
 def main(session, **kwargs):
+    remote_version = getRemoteVersion()
+    
     lists = [
         ("Hotbird @Bzyk83 mod. Republika", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-REPUBLIKA.zip"),
         ("Hotbird+Astra @Bzyk83 mod. Republika", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip"),
@@ -45,39 +57,53 @@ def main(session, **kwargs):
     ]
     
     dates = getDates()
-    counters = getCounters()
-    
     lists_display = []
+    
+    # Sprawdź aktualizację
+    if remote_version > CURRENT_VERSION:
+        lists_display.append(("🔄 NOWA WERSJA %s ➤ %s" % (CURRENT_VERSION, remote_version), "UPDATE", None))
+    else:
+        lists_display.append(("✅ Plugin aktualny v%s" % CURRENT_VERSION, "CURRENT", None))
+    
     for name, url in lists:
         date = dates.get(name, "brak daty")
-        count = counters.get(name, "0")
-        display = "%s | 📊%s | ⏰%s" % (name, count, date)
-        lists_display.append((display, url, name))  # name do licznika
+        display = "%s (%s)" % (name, date)
+        lists_display.append((display, url))
     
-    def choiceCallback(choice):
-        if choice and len(choice) > 1:
+    session.openWithCallback(lambda choice: choiceCallback(session, choice), 
+                            ChoiceBox, title="🛰️ MarqozzzCUP v%s" % CURRENT_VERSION, list=lists_display)
+
+def choiceCallback(session, choice):
+    if choice and choice[1]:
+        if choice[1] == "UPDATE":
+            session.openWithCallback(lambda confirmed: updateConfirm(session, confirmed), 
+                                   MessageBox, text="🔄 Zaktualizować do v%s?" % getRemoteVersion(), 
+                                   type=MessageBox.TYPE_YESNO)
+        elif choice[1] == "CURRENT":
+            session.open(MessageBox, text="✅ Masz najnowszą wersję v%s!" % CURRENT_VERSION, type=MessageBox.TYPE_INFO, timeout=2)
+        else:
             url = choice[1]
             full_name = choice[0]
-            real_name = choice[2]
-            confirmCallback(session, True, url, full_name, real_name)
-    
-    session.openWithCallback(choiceCallback, ChoiceBox, 
-                            title="🛰️ MarqozzzCUP - Wybierz listę:", list=lists_display)
+            session.openWithCallback(lambda confirmed: confirmCallback(session, confirmed, url, full_name), 
+                                   MessageBox, text="🚀 Zainstalować listę?\n\n%s" % full_name, 
+                                   type=MessageBox.TYPE_YESNO)
 
-def confirmCallback(session, confirmed, url, full_name, real_name):
+def updateConfirm(session, confirmed):
     if confirmed:
-        installList(session, url, full_name, real_name)
+        if updatePlugin(session):
+            session.open(MessageBox, text="✅ ZAKTUALIZOWANO v%s!\n🔄 Restart..." % getRemoteVersion(), 
+                        type=MessageBox.TYPE_INFO, timeout=3)
+            os.system("killall -9 enigma2 &")
+        else:
+            session.open(MessageBox, text="❌ Błąd aktualizacji!", type=MessageBox.TYPE_ERROR)
 
-def installList(session, url, full_name, real_name):
-    # INKREMENTUJ LICZNIK
+def confirmCallback(session, confirmed, url, full_name):
+    if confirmed:
+        installList(session, url, full_name)
+
+def installList(session, url, full_name):
     try:
-        urlopen("https://marqozzz.github.io/MarqozzzCUP-/lists/pobrania.php?list=%s" % real_name)
-        print("✅ Licznik zaktualizowany: %s" % real_name)
-    except:
-        print("⚠️ Błąd licznika")
-    
-    try:
-        print("MarqozzzCUP: Instaluję %s" % full_name)
+        print("MarqozzzCUP: %s" % full_name)
         
         if os.path.exists("/etc/enigma2/bouquets.tv"):
             shutil.copy2("/etc/enigma2/bouquets.tv", "/etc/enigma2/bouquets.tv.bak")
@@ -100,10 +126,10 @@ def installList(session, url, full_name, real_name):
         os.unlink("/tmp/list.zip")
         shutil.rmtree("/tmp/list_unpack")
         
-        session.open(MessageBox, text="✅ ZAINSTALOWANO!\n%s\n📊 Plików: %d\n🔄 Restart za 5s..." % (full_name, files_copied), 
+        session.open(MessageBox, text="✅ ZAKOŃCZONO!\n%s\nPlików: %d\n🔄 Restart za 5s..." % (full_name, files_copied), 
                      type=MessageBox.TYPE_INFO, timeout=5)
         
         os.system("(sleep 5 && killall -9 enigma2) &")
         
     except Exception as e:
-        session.open(MessageBox, text="❌ BŁĄD!\n%s\n%s" % (full_name, str(e)), type=MessageBox.TYPE_ERROR)
+        session.open(MessageBox, text="❌ BŁĄD:\n%s\n%s" % (full_name, str(e)), type=MessageBox.TYPE_ERROR)
