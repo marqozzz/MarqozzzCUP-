@@ -7,11 +7,11 @@ import zipfile
 import os
 import shutil
 
-CURRENT_VERSION = "1.1"  # Twoja wersja
+CURRENT_VERSION = "1.1"
 
 def Plugins(**kwargs):
     return [PluginDescriptor(name="MarqozzzCUP v%s" % CURRENT_VERSION, 
-                            description="Listy kanałów + auto-update", 
+                            description="Listy kanalow + auto-update", 
                             where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main)]
 
 def getRemoteVersion():
@@ -50,17 +50,17 @@ def main(session, **kwargs):
     remote_version = getRemoteVersion()
     
     lists = [
-        ("Hotbird @Bzyk83 mod. Republika", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-REPUBLIKA.zip"),
-        ("Hotbird+Astra @Bzyk83 mod. Republika", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip"),
-        ("Hotbird @Bzyk83", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB.zip"),
-        ("Hotbird+Astra @Bzyk83", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-ASTRA.zip")
+        ("Hotbird @Bzyk83 mod. Republika", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-REPUBLIKA/marqozzzcup-complete-HB-REPUBLIKA.zip"),
+        ("Hotbird+Astra @Bzyk83 mod. Republika", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-ASTRA-REPUBLIKA/marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip"),
+        ("Hotbird @Bzyk83", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB/marqozzzcup-complete-HB.zip"),
+        ("Hotbird+Astra @Bzyk83", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-ASTRA/marqozzzcup-complete-HB-ASTRA.zip")
     ]
     
     dates = getDates()
     lists_display = []
     
     if remote_version > CURRENT_VERSION:
-        lists_display.append(("Nowa wersja %s (z %s)" % (remote_version, CURRENT_VERSION), "UPDATE", None))
+        lists_display.append(("Nowa wersja %s dostepna. Aktualizowac z %s?" % (remote_version, CURRENT_VERSION), "UPDATE", None))
     else:
         lists_display.append(("Plugin aktualny v%s" % CURRENT_VERSION, "CURRENT", None))
     
