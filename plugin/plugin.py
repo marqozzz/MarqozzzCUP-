@@ -9,7 +9,7 @@ import shutil
 
 def Plugins(**kwargs):
     return [PluginDescriptor(name="MarqozzzCUP", 
-                            description="4 listy kanałów do wyboru", 
+                            description="4 listy kanałów z datami i licznikami", 
                             where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main)]
 
 def getDates():
@@ -24,6 +24,18 @@ def getDates():
     except:
         return {}
 
+def getCounters():
+    try:
+        counters_raw = urlopen("https://marqozzz.github.io/MarqozzzCUP-/lists/pobrania.php").read().decode()
+        counters = {}
+        for line in counters_raw.split('\n'):
+            if ':' in line:
+                name, count = line.split(':', 1)
+                counters[name.strip()] = count.strip()
+        return counters
+    except:
+        return {}
+
 def main(session, **kwargs):
     lists = [
         ("Hotbird @Bzyk83 mod. Republika", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-REPUBLIKA.zip"),
@@ -33,29 +45,40 @@ def main(session, **kwargs):
     ]
     
     dates = getDates()
-    lists_with_date = []
+    counters = getCounters()
+    
+    lists_display = []
     for name, url in lists:
         date = dates.get(name, "brak daty")
-        lists_with_date.append(("%s (%s)" % (name, date), url))
+        count = counters.get(name, "0")
+        display = "%s | 📊%s | ⏰%s" % (name, count, date)
+        lists_display.append((display, url, name))  # name do licznika
     
-    session.openWithCallback(lambda choice: choiceCallback(session, choice), 
-                            ChoiceBox, title="Wybierz listę:", list=lists_with_date)
+    def choiceCallback(choice):
+        if choice and len(choice) > 1:
+            url = choice[1]
+            full_name = choice[0]
+            real_name = choice[2]
+            confirmCallback(session, True, url, full_name, real_name)
+    
+    session.openWithCallback(choiceCallback, ChoiceBox, 
+                            title="🛰️ MarqozzzCUP - Wybierz listę:", list=lists_display)
 
-# reszta bez zmian...
-def choiceCallback(session, choice):
-    if choice and choice[1]:
-        url = choice[1]
-        full_name = choice[0]
-        session.openWithCallback(lambda confirmed: confirmCallback(session, confirmed, url, full_name), 
-                                MessageBox, text="Zainstalować:\n%s?" % full_name, type=MessageBox.TYPE_YESNO)
-
-def confirmCallback(session, confirmed, url, full_name):
+def confirmCallback(session, confirmed, url, full_name, real_name):
     if confirmed:
-        installList(session, url, full_name)
+        installList(session, url, full_name, real_name)
 
-def installList(session, url, full_name):
+def installList(session, url, full_name, real_name):
+    # INKREMENTUJ LICZNIK
     try:
-        print("MarqozzzCUP: %s" % full_name)
+        urlopen("https://marqozzz.github.io/MarqozzzCUP-/lists/pobrania.php?list=%s" % real_name)
+        print("✅ Licznik zaktualizowany: %s" % real_name)
+    except:
+        print("⚠️ Błąd licznika")
+    
+    try:
+        print("MarqozzzCUP: Instaluję %s" % full_name)
+        
         if os.path.exists("/etc/enigma2/bouquets.tv"):
             shutil.copy2("/etc/enigma2/bouquets.tv", "/etc/enigma2/bouquets.tv.bak")
         
@@ -77,9 +100,10 @@ def installList(session, url, full_name):
         os.unlink("/tmp/list.zip")
         shutil.rmtree("/tmp/list_unpack")
         
-        session.open(MessageBox, text="✅ %s\nPlików: %d\nRestart za 5s" % (full_name, files_copied), 
+        session.open(MessageBox, text="✅ ZAINSTALOWANO!\n%s\n📊 Plików: %d\n🔄 Restart za 5s..." % (full_name, files_copied), 
                      type=MessageBox.TYPE_INFO, timeout=5)
+        
         os.system("(sleep 5 && killall -9 enigma2) &")
         
     except Exception as e:
-        session.open(MessageBox, text="❌ BŁĄD %s:\n%s" % (full_name, str(e)), type=MessageBox.TYPE_ERROR)
+        session.open(MessageBox, text="❌ BŁĄD!\n%s\n%s" % (full_name, str(e)), type=MessageBox.TYPE_ERROR)
