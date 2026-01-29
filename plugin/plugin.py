@@ -7,11 +7,11 @@ import zipfile
 import os
 import shutil
 
-CURRENT_VERSION = "1.0"
+CURRENT_VERSION = "1.1"
 
 def Plugins(**kwargs):
     return [PluginDescriptor(name="MarqozzzCUP v%s" % CURRENT_VERSION, 
-                            description="Listy kanalow + auto-update", 
+                            description="Listy kanalow + auto-update + GA", 
                             where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main)]
 
 def getRemoteVersion():
@@ -31,6 +31,18 @@ def getDates():
         return dates
     except:
         return {}
+
+def trackDownload(name):
+    try:
+        ga_id = "G-BNT56RLDFF"  # TWOJE GA4 ID!
+        ga_url = f"https://www.google-analytics.com/collect?v=1&t=event"
+        ga_url += f"&tid={ga_id}&ec=MarqozzzCUP&ea=lista_pobrana"
+        ga_url += f"&el={name.replace(' ', '_').replace('@', 'at').replace('.', '')}"
+        ga_url += "&ev=1&dt=MarqozzzCUP_Dekoder"
+        urlopen(ga_url, timeout=3)
+        print(f"GA: {name} zapisane")
+    except:
+        pass
 
 def updatePlugin(session):
     try:
@@ -101,6 +113,10 @@ def confirmCallback(session, confirmed, url, full_name):
         installList(session, url, full_name)
 
 def installList(session, url, full_name):
+    # GOOGLE ANALYTICS
+    name_short = full_name.split(' (')[0]
+    trackDownload(name_short)
+    
     try:
         print("MarqozzzCUP: %s" % full_name)
         
