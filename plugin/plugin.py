@@ -9,7 +9,7 @@ import shutil
 
 def Plugins(**kwargs):
     return [PluginDescriptor(name="MarqozzzCUP", 
-                            description="Plugin do aktualizacji list kanałów", 
+                            description="4 listy kanałów do wyboru", 
                             where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main)]
 
 def getDates():
@@ -25,26 +25,29 @@ def getDates():
         return {}
 
 def main(session, **kwargs):
-    base_lists = [
+    lists = [
+        ("Hotbird @Bzyk83 mod. Republika", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-REPUBLIKA.zip"),
+        ("Hotbird+Astra @Bzyk83 mod. Republika", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip"),
         ("Hotbird @Bzyk83", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB.zip"),
         ("Hotbird+Astra @Bzyk83", "https://raw.githubusercontent.com/marqozzz/MarqozzzCUP-/main/lists/marqozzzcup-complete-HB-ASTRA.zip")
     ]
     
     dates = getDates()
     lists_with_date = []
-    for name, url in base_lists:
+    for name, url in lists:
         date = dates.get(name, "brak daty")
         lists_with_date.append(("%s (%s)" % (name, date), url))
     
     session.openWithCallback(lambda choice: choiceCallback(session, choice), 
-                            ChoiceBox, title="Wybierz listę do zainstalowania:", list=lists_with_date)
+                            ChoiceBox, title="Wybierz listę:", list=lists_with_date)
 
+# reszta bez zmian...
 def choiceCallback(session, choice):
     if choice and choice[1]:
         url = choice[1]
         full_name = choice[0]
         session.openWithCallback(lambda confirmed: confirmCallback(session, confirmed, url, full_name), 
-                                MessageBox, text="Zainstalować listę:\n%s ?" % full_name, type=MessageBox.TYPE_YESNO)
+                                MessageBox, text="Zainstalować:\n%s?" % full_name, type=MessageBox.TYPE_YESNO)
 
 def confirmCallback(session, confirmed, url, full_name):
     if confirmed:
@@ -53,7 +56,6 @@ def confirmCallback(session, confirmed, url, full_name):
 def installList(session, url, full_name):
     try:
         print("MarqozzzCUP: %s" % full_name)
-        
         if os.path.exists("/etc/enigma2/bouquets.tv"):
             shutil.copy2("/etc/enigma2/bouquets.tv", "/etc/enigma2/bouquets.tv.bak")
         
@@ -75,10 +77,9 @@ def installList(session, url, full_name):
         os.unlink("/tmp/list.zip")
         shutil.rmtree("/tmp/list_unpack")
         
-        session.open(MessageBox, text="lista została zaktualizowana:\n%s\nnadpisano %d plików\nautorestart za 5 sekund" % (full_name, files_copied), 
+        session.open(MessageBox, text="✅ %s\nPlików: %d\nRestart za 5s" % (full_name, files_copied), 
                      type=MessageBox.TYPE_INFO, timeout=5)
-        
         os.system("(sleep 5 && killall -9 enigma2) &")
         
     except Exception as e:
-        session.open(MessageBox, text="BŁĄD %s: %s" % (full_name, str(e)), type=MessageBox.TYPE_ERROR)
+        session.open(MessageBox, text="❌ BŁĄD %s:\n%s" % (full_name, str(e)), type=MessageBox.TYPE_ERROR)
