@@ -7,7 +7,7 @@ import zipfile
 import os
 import shutil
 
-CURRENT_VERSION = "1.0"  # Twoja aktualna wersja
+CURRENT_VERSION = "1.1"  # Twoja aktualna wersja
 
 def Plugins(**kwargs):
     return [PluginDescriptor(name="MarqozzzCUP v%s" % CURRENT_VERSION, 
