@@ -2,16 +2,17 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
-from urllib.request import urlopen, urlretrieve
+from urllib.request import urlopen, urlretrieve, Request
 import zipfile
 import os
 import shutil
+import json
 
 CURRENT_VERSION = "1.0"
 
 def Plugins(**kwargs):
     return [PluginDescriptor(name="MarqozzzCUP v%s" % CURRENT_VERSION, 
-                            description="Listy kanalow + auto-update + GA", 
+                            description="Listy kanalow + auto-update + GA4", 
                             where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main)]
 
 def getRemoteVersion():
@@ -34,13 +35,30 @@ def getDates():
 
 def trackDownload(name):
     try:
-        ga_id = "G-BNT56RLDFF"  # TWOJE GA4 ID!
-        ga_url = f"https://www.google-analytics.com/collect?v=1&t=event"
-        ga_url += f"&tid={ga_id}&ec=MarqozzzCUP&ea=lista_pobrana"
-        ga_url += f"&el={name.replace(' ', '_').replace('@', 'at').replace('.', '')}"
-        ga_url += "&ev=1&dt=MarqozzzCUP_Dekoder"
-        urlopen(ga_url, timeout=3)
-        print(f"GA: {name} zapisane")
+        GA4_MEASUREMENT_ID = "G-BNT56RLDFF"
+        GA4_API_SECRET = "7utW4_CGQha5oSUL9nEH5w"
+        
+        endpoint = (
+            f"https://www.google-analytics.com/mp/collect"
+            f"?measurement_id={GA4_MEASUREMENT_ID}&api_secret={GA4_API_SECRET}"
+        )
+
+        payload = {
+            "client_id": "marqozzzcup." + str(os.getpid()),
+            "events": [
+                {
+                    "name": "lista_pobrana",
+                    "params": {
+                        "lista_nazwa": name,
+                    },
+                }
+            ],
+        }
+
+        data = json.dumps(payload).encode("utf-8")
+        req = Request(endpoint, data=data, headers={"Content-Type": "application/json"})
+        urlopen(req, timeout=3)
+        print(f"GA4: {name} zapisane")
     except:
         pass
 
@@ -96,13 +114,13 @@ def choiceCallback(session, choice):
             url = choice[1]
             full_name = choice[0]
             session.openWithCallback(lambda confirmed: confirmCallback(session, confirmed, url, full_name), 
-                                   MessageBox, text="Zainstalowac liste?\n\n%s" % full_name, 
+                                   MessageBox, text="Zainstalowac liste?\\n\\n%s" % full_name, 
                                    type=MessageBox.TYPE_YESNO)
 
 def updateConfirm(session, confirmed):
     if confirmed:
         if updatePlugin(session):
-            session.open(MessageBox, text="Plugin zaktualizowany!\nDekoder zostanie zrestartowany za 5 sekund...", 
+            session.open(MessageBox, text="Plugin zaktualizowany!\\nDekoder zostanie zrestartowany za 5 sekund...", 
                         type=MessageBox.TYPE_INFO, timeout=5)
             os.system("(sleep 5 && killall -9 enigma2) &")
         else:
@@ -113,7 +131,7 @@ def confirmCallback(session, confirmed, url, full_name):
         installList(session, url, full_name)
 
 def installList(session, url, full_name):
-    # GOOGLE ANALYTICS
+    # GOOGLE ANALYTICS GA4
     name_short = full_name.split(' (')[0]
     trackDownload(name_short)
     
@@ -141,10 +159,10 @@ def installList(session, url, full_name):
         os.unlink("/tmp/list.zip")
         shutil.rmtree("/tmp/list_unpack")
         
-        session.open(MessageBox, text="Lista zainstalowana!\n%s\nPlikow: %d\nDekoder zostanie zrestartowany za 5 sekund..." % (full_name, files_copied), 
+        session.open(MessageBox, text="Lista zainstalowana!\\n%s\\nPlikow: %d\\nDekoder zostanie zrestartowany za 5 sekund..." % (full_name, files_copied), 
                      type=MessageBox.TYPE_INFO, timeout=5)
         
         os.system("(sleep 5 && killall -9 enigma2) &")
         
     except Exception as e:
-        session.open(MessageBox, text="Blad instalacji!\n%s\n%s" % (full_name, str(e)), type=MessageBox.TYPE_ERROR)
+        session.open(MessageBox, text="Blad instalacji!\\n%s\\n%s" % (full_name, str(e)), type=MessageBox.TYPE_ERROR)
