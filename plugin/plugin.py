@@ -8,12 +8,18 @@ import os
 import shutil
 import json
 
-CURRENT_VERSION = "1.0"
+CURRENT_VERSION = "1.1"
 
 def Plugins(**kwargs):
-    return [PluginDescriptor(name="MarqozzzCUP v%s" % CURRENT_VERSION, 
-                            description="Listy kanalow + auto-update + GA4", 
-                            where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main)]
+    return [
+        PluginDescriptor(
+            name="MarqozzzCUP v%s" % CURRENT_VERSION, 
+            description="Listy Hotbird, Astra - jednym klikiem", 
+            where=PluginDescriptor.WHERE_PLUGINMENU, 
+            fnc=main,
+            icon="icon.png"
+        )
+    ]
 
 def getRemoteVersion():
     try:
@@ -34,33 +40,31 @@ def getDates():
         return {}
 
 def trackDownload(name):
+    GA4_MEASUREMENT_ID = "G-BNT56RLDFF"
+    GA4_API_SECRET = "7utW4_CGQha5oSUL9nEH5w"
+    
+    endpoint = f"https://www.google-analytics.com/mp/collect?measurement_id={GA4_MEASUREMENT_ID}&api_secret={GA4_API_SECRET}"
+    
+    payload = {
+        "client_id": f"marqozzzcup.{os.getpid()}",
+        "debug_mode": True,
+        "events": [{
+            "name": "lista_pobrana",
+            "params": {
+                "lista_nazwa": name,
+                "dekoder_pid": os.getpid()
+            }
+        }]
+    }
+    
     try:
-        GA4_MEASUREMENT_ID = "G-BNT56RLDFF"
-        GA4_API_SECRET = "7utW4_CGQha5oSUL9nEH5w"
-        
-        endpoint = (
-            f"https://www.google-analytics.com/mp/collect"
-            f"?measurement_id={GA4_MEASUREMENT_ID}&api_secret={GA4_API_SECRET}"
-        )
-
-        payload = {
-            "client_id": "marqozzzcup." + str(os.getpid()),
-            "events": [
-                {
-                    "name": "lista_pobrana",
-                    "params": {
-                        "lista_nazwa": name,
-                    },
-                }
-            ],
-        }
-
         data = json.dumps(payload).encode("utf-8")
         req = Request(endpoint, data=data, headers={"Content-Type": "application/json"})
-        urlopen(req, timeout=3)
-        print(f"GA4: {name} zapisane")
-    except:
-        pass
+        response = urlopen(req, timeout=10) 
+        print(f"GA4 OK: {response.status} {name}")
+    except Exception as e:
+        print(f"GA4 FAIL: {str(e)}")
+
 
 def updatePlugin(session):
     try:
@@ -120,7 +124,7 @@ def choiceCallback(session, choice):
 def updateConfirm(session, confirmed):
     if confirmed:
         if updatePlugin(session):
-            session.open(MessageBox, text="Plugin zaktualizowany!\\nDekoder zostanie zrestartowany za 5 sekund...", 
+            session.open(MessageBox, text="Plugin zaktualizowany!\\nInterfejs zostanie zrestartowany za 5 sekund...", 
                         type=MessageBox.TYPE_INFO, timeout=5)
             os.system("(sleep 5 && killall -9 enigma2) &")
         else:
@@ -159,7 +163,7 @@ def installList(session, url, full_name):
         os.unlink("/tmp/list.zip")
         shutil.rmtree("/tmp/list_unpack")
         
-        session.open(MessageBox, text="Lista zainstalowana!\\n%s\\nPlikow: %d\\nDekoder zostanie zrestartowany za 5 sekund..." % (full_name, files_copied), 
+        session.open(MessageBox, text="Lista zainstalowana!\\n%s\\nPlikow: %d\\nInterfejs zostanie zrestartowany za 5 sekund..." % (full_name, files_copied), 
                      type=MessageBox.TYPE_INFO, timeout=5)
         
         os.system("(sleep 5 && killall -9 enigma2) &")
