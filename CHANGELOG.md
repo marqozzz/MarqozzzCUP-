@@ -19,3 +19,9 @@
 
 ### Unchanged
 - `lists/marqozzzcup-complete-HB.zip` — no changes
+
+## [2026-03-13] Release update by v1.0.0 at 2026-03-13 14:03 UTC
+
+### Changed / New
+- `lists/marqozzzcup-complete-HB-ASTRA.zip` (from `MarqozzzCUP-plugin/input_data/Lista-bzyk83-dual-13E-192E-27.02.2026.zip`) — new (sha256: 2ea4171df9ab)
+- `lists/marqozzzcup-complete-HB.zip` (from `MarqozzzCUP-plugin/input_data/Lista-bzyk83-hb-13E-16.03.2026.zip`) — new (sha256: e9e28807195c)
