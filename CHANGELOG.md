@@ -69,3 +69,15 @@
 ### Unchanged
 - `lists/marqozzzcup-complete-HB-ASTRA.zip` — no changes
 - `lists/marqozzzcup-complete-HB.zip` — no changes
+
+## [2026-03-13] Release update by v1.2.0 at 2026-03-13 21:59 UTC
+
+### Changed / New
+- `marqozzzcup-complete-HB-ASTRA.zip` → release `v1-HB-ASTRA` + `lists/marqozzzcup-complete-HB-ASTRA.zip` (from `MarqozzzCUP-plugin/input_data/Lista-bzyk83-dual-13E-192E-24.02.2026.zip`) — unchanged
+- `marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip` → release `v1-HB-ASTRA-REPUBLIKA` + `lists/marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip` (generated from `MarqozzzCUP-plugin/input_data/Lista-bzyk83-dual-13E-192E-24.02.2026.zip`)
+- `marqozzzcup-complete-HB.zip` → release `v1-HB` + `lists/marqozzzcup-complete-HB.zip` (from `MarqozzzCUP-plugin/input_data/Lista-bzyk83-hb-13E-11.03.2026.zip`) — unchanged
+- `marqozzzcup-complete-HB-REPUBLIKA.zip` → release `v1-HB-REPUBLIKA` + `lists/marqozzzcup-complete-HB-REPUBLIKA.zip` (generated from `MarqozzzCUP-plugin/input_data/Lista-bzyk83-hb-13E-11.03.2026.zip`)
+
+### Unchanged
+- `lists/marqozzzcup-complete-HB-ASTRA.zip` — no changes
+- `lists/marqozzzcup-complete-HB.zip` — no changes
