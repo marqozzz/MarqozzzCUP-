@@ -8,7 +8,7 @@ import os
 import shutil
 import json
 
-CURRENT_VERSION = "1.4"
+CURRENT_VERSION = "1.5"
 
 def Plugins(**kwargs):
     return [
@@ -89,6 +89,7 @@ def main(session, **kwargs):
         ("Hotbird @Bzyk83 mod. Republika", "https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=HB-REPUBLIKA"),
         ("Hotbird+Astra @Bzyk83 mod. Republika", "https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=HB-ASTRA-REPUBLIKA"),
         ("Hotbird @Bzyk83", "https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=HB"),
+        ("Hotbird @Bzyk83 nowy układ", "https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=HB-NOWY"),
         ("Hotbird+Astra @Bzyk83", "https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=HB-ASTRA")
     ]
     
