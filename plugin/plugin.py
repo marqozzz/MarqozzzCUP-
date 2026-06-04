@@ -8,7 +8,7 @@ import os
 import shutil
 import json
 
-CURRENT_VERSION = "1.3"
+CURRENT_VERSION = "1.4"
 
 def Plugins(**kwargs):
     return [
@@ -84,12 +84,12 @@ def main(session, **kwargs):
     remote_version = getRemoteVersion()
     
     lists = [
-        ("Hotbird @marqozzz", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-marqozzz/marqozzzcup-complete-HB.zip"),
-        ("Hotbird+Astra @marqozzz", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-ASTRA-marqozzz/marqozzzcup-complete-HB-ASTRA.zip"),
-        ("Hotbird @Bzyk83 mod. Republika", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-REPUBLIKA/marqozzzcup-complete-HB-REPUBLIKA.zip"),
-        ("Hotbird+Astra @Bzyk83 mod. Republika", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-ASTRA-REPUBLIKA/marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip"),
-        ("Hotbird @Bzyk83", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB/marqozzzcup-complete-HB.zip"),
-        ("Hotbird+Astra @Bzyk83", "https://github.com/marqozzz/MarqozzzCUP-/releases/download/v1-HB-ASTRA/marqozzzcup-complete-HB-ASTRA.zip")
+        ("Hotbird @marqozzz", "https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=HB-marqozzz"),
+        ("Hotbird+Astra @marqozzz", "https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=HB-ASTRA-marqozzz"),
+        ("Hotbird @Bzyk83 mod. Republika", "https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=HB-REPUBLIKA"),
+        ("Hotbird+Astra @Bzyk83 mod. Republika", "https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=HB-ASTRA-REPUBLIKA"),
+        ("Hotbird @Bzyk83", "https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=HB"),
+        ("Hotbird+Astra @Bzyk83", "https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=HB-ASTRA")
     ]
     
     dates = getDates()
