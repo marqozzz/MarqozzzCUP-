@@ -87,3 +87,13 @@
 ### Changed / New
 - `marqozzzcup-complete-HB-ASTRA.zip` → release `v1-HB-ASTRA-marqozzz` (direct 1:1) — new
 - `marqozzzcup-complete-HB.zip` → release `v1-HB-marqozzz` (direct 1:1) — new
+
+## [2026-06-04] Plugin v1.3
+
+### Added
+- Dwie nowe listy w menu (na gorze): "Hotbird @marqozzz" i "Hotbird+Astra @marqozzz"
+- Menu pokazuje teraz 6 list zamiast 4
+
+### Changed
+- Wersja pluginu 1.1 -> 1.3 (uzytkownicy zobacza powiadomienie o nowej wersji)
+- W folderze lists/ cztery listy @Bzyk83 zmieniono na marqozzzcup-complete-bzyk83-*.zip; nazwy plain zajmuja teraz listy @marqozzz (release assety bez zmian)
