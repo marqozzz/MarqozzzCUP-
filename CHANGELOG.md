@@ -97,3 +97,9 @@
 ### Changed
 - Wersja pluginu 1.1 -> 1.3 (uzytkownicy zobacza powiadomienie o nowej wersji)
 - W folderze lists/ cztery listy @Bzyk83 zmieniono na marqozzzcup-complete-bzyk83-*.zip; nazwy plain zajmuja teraz listy @marqozzz (release assety bez zmian)
+
+## [2026-06-04] Plugin v1.4
+
+### Changed
+- Pobieranie list idzie teraz przez Cloudflare Worker (https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=...), ktory loguje pobrania (czas, kraj, IP) i przekierowuje na plik release
+- Wersja pluginu 1.3 -> 1.4 (powiadomienie o aktualizacji dla uzytkownikow)
