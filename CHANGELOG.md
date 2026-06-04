@@ -112,3 +112,8 @@
 
 ### Changed
 - Wersja pluginu 1.4 -> 1.5
+
+## [2026-06-04] Release update by v1.7.0 at 2026-06-04 15:27 UTC
+
+### Changed / New
+- `marqozzzcup-complete-HB-NOWY.zip` → release `v1-HB-NOWY` + `lists/marqozzzcup-complete-bzyk83-HB-NOWY.zip` (from `nowy_uklad/Lista-bzyk83-hb-13E-02.06.2026.zip`) — new
