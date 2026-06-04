@@ -103,3 +103,12 @@
 ### Changed
 - Pobieranie list idzie teraz przez Cloudflare Worker (https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=...), ktory loguje pobrania (czas, kraj, IP) i przekierowuje na plik release
 - Wersja pluginu 1.3 -> 1.4 (powiadomienie o aktualizacji dla uzytkownikow)
+
+## [2026-06-04] Plugin v1.5
+
+### Added
+- Nowa lista w menu: "Hotbird @Bzyk83 nowy układ" (release v1-HB-NOWY), pod "Hotbird @Bzyk83"
+- Menu pokazuje teraz 7 list
+
+### Changed
+- Wersja pluginu 1.4 -> 1.5
