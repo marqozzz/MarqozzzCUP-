@@ -117,3 +117,9 @@
 
 ### Changed / New
 - `marqozzzcup-complete-HB-NOWY.zip` → release `v1-HB-NOWY` + `lists/marqozzzcup-complete-bzyk83-HB-NOWY.zip` (from `nowy_uklad/Lista-bzyk83-hb-13E-02.06.2026.zip`) — new
+
+## [2026-06-04] Plugin v1.6
+
+### Fixed
+- Pobieranie list przez Cloudflare Worker zwracalo HTTP 403 (Cloudflare error 1010) bo domyslny User-Agent Pythona (urllib) jest blokowany. Plugin ustawia teraz UA przegladarki globalnie (urlopen + urlretrieve), wiec pobieranie dziala.
+- Aktualizacja pluginu i odczyt wersji/dat ida z raw.githubusercontent.com (nie przez Workera), wiec uzytkownicy moga zaktualizowac do v1.6 mimo blokady pobierania list w starszej wersji.
