@@ -7,8 +7,16 @@ import zipfile
 import os
 import shutil
 import json
+import urllib.request as _urlreq
 
-CURRENT_VERSION = "1.5"
+# Cloudflare blocks the default Python-urllib User-Agent (HTTP 403, error 1010).
+# Install a browser-like UA globally so urlopen() and urlretrieve() pass through
+# the download Worker.
+_opener = _urlreq.build_opener()
+_opener.addheaders = [("User-Agent", "Mozilla/5.0 (Linux; Enigma2) MarqozzzCUP")]
+_urlreq.install_opener(_opener)
+
+CURRENT_VERSION = "1.6"
 
 def Plugins(**kwargs):
     return [
