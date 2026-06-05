@@ -123,3 +123,9 @@
 ### Fixed
 - Pobieranie list przez Cloudflare Worker zwracalo HTTP 403 (Cloudflare error 1010) bo domyslny User-Agent Pythona (urllib) jest blokowany. Plugin ustawia teraz UA przegladarki globalnie (urlopen + urlretrieve), wiec pobieranie dziala.
 - Aktualizacja pluginu i odczyt wersji/dat ida z raw.githubusercontent.com (nie przez Workera), wiec uzytkownicy moga zaktualizowac do v1.6 mimo blokady pobierania list w starszej wersji.
+
+## [2026-06-05] Release update by v1.7.1 at 2026-06-05 00:11 UTC
+
+### Changed / New
+- `marqozzzcup-complete-HB-ASTRA.zip` → release `v1-HB-ASTRA-marqozzz` + `lists/marqozzzcup-complete-HB-ASTRA.zip` (direct 1:1) — changed
+- `marqozzzcup-complete-HB.zip` → release `v1-HB-marqozzz` + `lists/marqozzzcup-complete-HB.zip` (direct 1:1) — changed
