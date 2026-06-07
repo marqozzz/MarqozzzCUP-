@@ -135,3 +135,9 @@
 ### Changed / New
 - `marqozzzcup-complete-HB-ASTRA.zip` → release `v1-HB-ASTRA-marqozzz` + `lists/marqozzzcup-complete-HB-ASTRA.zip` (direct 1:1) — changed
 - `marqozzzcup-complete-HB.zip` → release `v1-HB-marqozzz` + `lists/marqozzzcup-complete-HB.zip` (direct 1:1) — changed
+
+## [2026-06-07] Release update by v1.8.0 at 2026-06-07 11:34 UTC
+
+### Changed / New
+- `marqozzzcup-complete-HB-ASTRA.zip` → release `v1-HB-ASTRA-marqozzz` + `lists/marqozzzcup-complete-HB-ASTRA.zip` (direct 1:1) — changed
+- `marqozzzcup-complete-HB.zip` → release `v1-HB-marqozzz` + `lists/marqozzzcup-complete-HB.zip` (direct 1:1) — changed
