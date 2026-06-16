@@ -101,7 +101,6 @@
 ## [2026-06-04] Plugin v1.4
 
 ### Changed
-- Pobieranie list idzie teraz przez Cloudflare Worker (https://marqozzzcup-dl.marqozzz.workers.dev/dl?list=...), ktory loguje pobrania (czas, kraj, IP) i przekierowuje na plik release
 - Wersja pluginu 1.3 -> 1.4 (powiadomienie o aktualizacji dla uzytkownikow)
 
 ## [2026-06-04] Plugin v1.5
@@ -121,7 +120,6 @@
 ## [2026-06-04] Plugin v1.6
 
 ### Fixed
-- Pobieranie list przez Cloudflare Worker zwracalo HTTP 403 (Cloudflare error 1010) bo domyslny User-Agent Pythona (urllib) jest blokowany. Plugin ustawia teraz UA przegladarki globalnie (urlopen + urlretrieve), wiec pobieranie dziala.
 - Aktualizacja pluginu i odczyt wersji/dat ida z raw.githubusercontent.com (nie przez Workera), wiec uzytkownicy moga zaktualizowac do v1.6 mimo blokady pobierania list w starszej wersji.
 
 ## [2026-06-05] Release update by v1.7.1 at 2026-06-05 00:11 UTC
