@@ -182,3 +182,9 @@
 
 ### Unchanged
 - `release / marqozzzcup-complete-HB.zip` — no changes
+
+## [2026-06-29] Release update by v1.9.0 at 2026-06-29 14:33 UTC
+
+### Changed / New
+- `marqozzzcup-complete-HB-ASTRA.zip` → release `v1-HB-ASTRA-marqozzz` + `lists/marqozzzcup-complete-HB-ASTRA.zip` (direct 1:1) — changed
+- `marqozzzcup-complete-HB.zip` → release `v1-HB-marqozzz` + `lists/marqozzzcup-complete-HB.zip` (direct 1:1) — changed
