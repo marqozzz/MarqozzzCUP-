@@ -223,3 +223,8 @@
 
 ### Changed / New
 - `marqozzzcup-complete-HB-NOWY.zip` → release `v1-HB-NOWY` + `lists/marqozzzcup-complete-bzyk83-HB-NOWY.zip` (from `nowy_uklad/Lista-bzyk83-hb-13E-07.07.2026.zip`) — new
+
+## [2026-07-10] Release update by v1.9.0 at 2026-07-10 07:08 UTC
+
+### Changed / New
+- `marqozzzcup-complete-HB-NOWY.zip` → release `v1-HB-NOWY` + `lists/marqozzzcup-complete-bzyk83-HB-NOWY.zip` (from `nowy_uklad/Lista-bzyk83-hb-13E-09.07.2026.zip`) — new
