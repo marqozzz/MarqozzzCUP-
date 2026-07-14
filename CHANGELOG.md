@@ -239,3 +239,14 @@
 
 ### Unchanged
 - `lists/marqozzzcup-complete-HB-NOWY.zip` — no changes
+
+## [2026-07-14] Release update by v1.9.0 at 2026-07-14 10:02 UTC
+
+### Changed / New
+- `marqozzzcup-complete-HB-ASTRA.zip` → release `v1-HB-ASTRA` + `lists/marqozzzcup-complete-bzyk83-HB-ASTRA.zip` (from `Lista-bzyk83-dual-13E-192E-20.05.2026.zip`) — new
+- `marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip` → release `v1-HB-ASTRA-REPUBLIKA` + `lists/marqozzzcup-complete-bzyk83-HB-ASTRA-REPUBLIKA.zip` (generated from `Lista-bzyk83-dual-13E-192E-20.05.2026.zip`)
+- `marqozzzcup-complete-HB.zip` → release `v1-HB` + `lists/marqozzzcup-complete-bzyk83-HB.zip` (from `Lista-bzyk83-hb-13E-11.03.2026.zip`) — new
+- `marqozzzcup-complete-HB-REPUBLIKA.zip` → release `v1-HB-REPUBLIKA` + `lists/marqozzzcup-complete-bzyk83-HB-REPUBLIKA.zip` (generated from `Lista-bzyk83-hb-13E-11.03.2026.zip`)
+- `marqozzzcup-complete-HB-ASTRA.zip` → release `v1-HB-ASTRA` + `lists/marqozzzcup-complete-bzyk83-HB-ASTRA.zip` (from `nowy_uklad/Lista-bzyk83-dual-13E-192E-12.07.2026.zip`) — new
+- `marqozzzcup-complete-HB-ASTRA-REPUBLIKA.zip` → release `v1-HB-ASTRA-REPUBLIKA` + `lists/marqozzzcup-complete-bzyk83-HB-ASTRA-REPUBLIKA.zip` (generated from `nowy_uklad/Lista-bzyk83-dual-13E-192E-12.07.2026.zip`)
+- `marqozzzcup-complete-HB-NOWY.zip` → release `v1-HB-NOWY` + `lists/marqozzzcup-complete-bzyk83-HB-NOWY.zip` (from `nowy_uklad/Lista-bzyk83-hb-13E-12.07.2026.zip`) — new
